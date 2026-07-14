@@ -148,7 +148,14 @@
     </div>
     <div class="sheets">
       {#each sheets as sh, i}
-        <div class="sheet" class:flipped={i < current} style:z-index={zFor(i)}>
+        <!-- sheet i shows its front on spread i and its back on spread i+1;
+             anything else is visually buried, so hide it from the AX tree too -->
+        <div
+          class="sheet"
+          class:flipped={i < current}
+          style:z-index={zFor(i)}
+          aria-hidden={i === current || i === current - 1 ? undefined : 'true'}
+        >
           <div class="pg front">{@render pageFace(sh.front, i * 2 + 1)}</div>
           <div class="pg back">{@render pageFace(sh.back, i * 2 + 2)}</div>
         </div>
@@ -157,9 +164,9 @@
   </div>
 
   <div class="book-ctrl">
-    <button class="flip-btn" type="button" onclick={() => go(-1)} disabled={current === 0} aria-label="Previous spread">&larr; Flip back</button>
+    <button class="flip-btn" type="button" onclick={() => go(-1)} disabled={current === 0}>&larr; Flip back</button>
     <span class="flip-count mono" aria-live="polite">spread {current + 1} / {LAST + 1}</span>
-    <button class="flip-btn" type="button" onclick={() => go(1)} disabled={current === LAST} aria-label="Next spread">Flip on &rarr;</button>
+    <button class="flip-btn" type="button" onclick={() => go(1)} disabled={current === LAST}>Flip on &rarr;</button>
   </div>
 </div>
 

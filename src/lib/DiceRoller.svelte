@@ -60,7 +60,7 @@
       `${m5(v[0])},${m5(v[1])},${m5(v[2])},0,` +
       `${m5(n[0])},${m5(n[1])},${m5(n[2])},0,` +
       `${m5(G[0])},${m5(G[1])},${m5(G[2])},1)`;
-    return { n, transform };
+    return { n, v, transform };
   });
 
   /* d20 numbering: antipodal faces sum to 21 */
@@ -130,7 +130,12 @@
     if (d > 0.9999) qa = [1, 0, 0, 0];
     else if (d < -0.9999) qa = qAxis([1, 0, 0], Math.PI);
     else qa = qAxis(cross(nf, [0, 0, 1]), Math.acos(Math.min(1, Math.max(-1, d))));
-    return qMul(TILT, qMul(qAxis([0, 0, 1], twist), qa));
+    /* in-plane fix: qa aligns the normal but leaves the number at an
+       arbitrary spin. Rotate the face's local +y (glyph-down, CSS y
+       points down) onto world +y so it reads upright, then twist. */
+    const w = qRotVec(qa, faces[i].v);
+    const upright = Math.PI / 2 - Math.atan2(w[1], w[0]);
+    return qMul(TILT, qMul(qAxis([0, 0, 1], twist + upright), qa));
   };
 
   /* ---------- what the die tells you to play ---------- */

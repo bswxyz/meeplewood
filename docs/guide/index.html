@@ -3,32 +3,36 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f3ecdf" />
+  <meta name="color-scheme" content="light dark" />
   <script>
     document.documentElement.classList.add('js');
     try {
       var t = localStorage.getItem('meeplewood-theme');
-      if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      if (t === 'light' || t === 'dark') {
+        document.documentElement.dataset.theme = t;
+        var m = document.querySelector('meta[name="theme-color"]');
+        if (m) m.setAttribute('content', t === 'dark' ? '#16130f' : '#f3ecdf');
+      }
     } catch (e) {}
   </script>
-  <meta name="theme-color" content="#f3ecdf" />
-  <meta name="color-scheme" content="light dark" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 10a14 14 0 0 1 14 14c0 6-3 10-6.5 13 11 3 22.5 10 26.5 17.5 3 6-1.5 12.5-8.5 12.5H63.5c2.5 8 6.5 17 6.5 21H30c0-4 4-13 6.5-21H24.5c-7 0-11.5-6.5-8.5-12.5C20 47 31.5 40 42.5 37 39 34 36 30 36 24a14 14 0 0 1 14-14z' fill='%231f8a8a'/%3E%3C/svg%3E" />
-  <link href="../_app/immutable/entry/start.DvjHjNxr.js" rel="modulepreload">
-		<link href="../_app/immutable/chunks/DTnyjT_j.js" rel="modulepreload">
+  <link href="../_app/immutable/entry/start.D4s7x13K.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/Ca7NLsHY.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/9pvJN_in.js" rel="modulepreload">
-		<link href="../_app/immutable/chunks/n2gM5OLj.js" rel="modulepreload">
+		<link href="../_app/immutable/chunks/DZ7lSmkq.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/DlW3QZjk.js" rel="modulepreload">
-		<link href="../_app/immutable/entry/app.xjlApaga.js" rel="modulepreload">
+		<link href="../_app/immutable/entry/app.DXvq-OV7.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/Dg70k1wo.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/D-Ms5Fdp.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/BWKZjBXG.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/BobCuJtO.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/DTMTvYT-.js" rel="modulepreload">
 		<link href="../_app/immutable/nodes/0.BuHCtihU.js" rel="modulepreload">
-		<link href="../_app/immutable/nodes/3.CIUnD_ET.js" rel="modulepreload">
+		<link href="../_app/immutable/nodes/3.BKreR9vl.js" rel="modulepreload">
 		<link href="../_app/immutable/chunks/BU7v-SSO.js" rel="modulepreload">
 		<!--36n0qb--><meta name="description" content="A build guide for Meeplewood: the idea, the SvelteKit static stack, a real d20 built from twenty divs with matrix3d and quaternions, the page-flip rulebook, and how to ship it on GitHub Pages."/><!----><title>How Meeplewood was built — Parable build guide</title>
 		<link href="../_app/immutable/assets/0.DCJi6iUL.css" rel="stylesheet">
@@ -100,7 +104,7 @@ git push               # then: Settings -> Pages -> main /docs</code></pre> <p c
 			
 			<script>
 				{
-					__sveltekit_1mzmigl = {
+					__sveltekit_18x0kpo = {
 						base: new URL("..", location).pathname.slice(0, -1),
 						assets: "/meeplewood"
 					};
@@ -108,8 +112,8 @@ git push               # then: Settings -> Pages -> main /docs</code></pre> <p c
 					const element = document.currentScript.parentElement;
 
 					Promise.all([
-						import("../_app/immutable/entry/start.DvjHjNxr.js"),
-						import("../_app/immutable/entry/app.xjlApaga.js")
+						import("../_app/immutable/entry/start.D4s7x13K.js"),
+						import("../_app/immutable/entry/app.DXvq-OV7.js")
 					]).then(([kit, app]) => {
 						kit.start(app, element, {
 							node_ids: [0, 3],
