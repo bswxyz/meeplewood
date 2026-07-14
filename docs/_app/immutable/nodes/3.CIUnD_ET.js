@@ -1,0 +1,48 @@
+import{a as h,f as v}from"../chunks/BWKZjBXG.js";import{N as S,K as e,H as T,I as _,z as $,L as s,$ as M,M as t}from"../chunks/9pvJN_in.js";import{h as A,T as C,s as p}from"../chunks/BU7v-SSO.js";import{b}from"../chunks/n2gM5OLj.js";S();var G=v('<meta name="description" content="A build guide for Meeplewood: the idea, the SvelteKit static stack, a real d20 built from twenty divs with matrix3d and quaternions, the page-flip rulebook, and how to ship it on GitHub Pages."/>'),P=v(`<a class="skip" href="#doc">Skip to content</a> <main id="doc" class="doc svelte-36n0qb"><div class="doc-bar svelte-36n0qb"><a class="doc-back svelte-36n0qb">&larr; Back to Meeplewood</a> <!></div> <p class="eyebrow mono svelte-36n0qb">[ Parable build guide ]</p> <h1 class="svelte-36n0qb">How Meeplewood was built</h1> <p class="lede svelte-36n0qb">A board-game publisher whose hero is an honest-to-goodness <strong class="svelte-36n0qb">d20 built out of
+    twenty <code class="svelte-36n0qb">&lt;div&gt;</code>s</strong> — icosahedron math, one <code class="svelte-36n0qb">matrix3d</code> per face,
+    rolled with quaternions, settled with an overshoot ease. Plus a rulebook that flips like paper.
+    No 3D library anywhere.</p> <div class="tag-row svelte-36n0qb" aria-label="Stack summary"><span class="svelte-36n0qb">SvelteKit + adapter-static</span><span class="svelte-36n0qb">Svelte 5 runes</span><span class="svelte-36n0qb">CSS 3D · no libraries</span><span class="svelte-36n0qb">Fredoka / Nunito / Space Mono</span><span class="svelte-36n0qb">light + dark</span><span class="svelte-36n0qb">reduced-motion aware</span></div> <h2 class="svelte-36n0qb">The idea</h2> <p class="svelte-36n0qb">Every game night starts with the same argument: <em>what do we play?</em> So the site opens by
+    settling it — a clickable d20 that tumbles, lands, and tells you which box to pull off the shelf.
+    The second signature follows the same logic. A publisher that brags about "kind rulebooks" should
+    prove it, so the how-to-play section <strong class="svelte-36n0qb">is</strong> the rulebook: four spreads you flip
+    through in CSS 3D, short enough to time yourself reading.</p> <h2 class="svelte-36n0qb">The stack</h2> <p class="svelte-36n0qb">SvelteKit with <code class="svelte-36n0qb">@sveltejs/adapter-static</code>, fully prerendered — no server, no fallback
+    page, every route is plain HTML the moment it loads. Svelte 5 runes (<code class="svelte-36n0qb">$state</code>, <code class="svelte-36n0qb">$derived</code>) drive the die's orientation and the book's spread index. The build lands in <code class="svelte-36n0qb">docs/</code> so GitHub Pages can serve it straight off the main branch. Type is Fredoka for
+    display (round, friendly, slightly toy-like), Nunito for body, and Space Mono for the table-talk
+    metadata — player counts, teach times, page numbers.</p> <h2 class="svelte-36n0qb">Signature technique — a d20 from twenty divs</h2> <p class="svelte-36n0qb">An icosahedron's 12 vertices are just the corners of three mutually-perpendicular golden
+    rectangles: <code class="svelte-36n0qb">(0, ±1, ±φ)</code> and its two rotations. Its 20 faces are every triple of
+    vertices exactly one edge apart — cheap to find by brute force at init. Each face then needs a
+    single CSS transform that lays a flat triangle onto the solid, which is one change-of-basis
+    matrix: local x along the triangle's base, local y from apex to centroid, z the outward
+    normal, translation to the centroid.</p> <pre class="svelte-36n0qb"><code class="svelte-36n0qb"></code></pre> <p class="svelte-36n0qb">Each face element is a <code class="svelte-36n0qb">clip-path</code> triangle whose <code class="svelte-36n0qb">transform-origin</code> sits
+    on the triangle's centroid (<code class="svelte-36n0qb">50% 66.667%</code>), so the matrix drops it exactly into place
+    inside a <code class="svelte-36n0qb">preserve-3d</code> stage. The stage itself carries one rotation — a quaternion,
+    rendered to CSS as <code class="svelte-36n0qb">rotate3d()</code>.</p> <pre class="svelte-36n0qb"><code class="svelte-36n0qb"></code></pre> <p class="svelte-36n0qb">Because the roll picks its face <em>first</em>, the suggestion is honest: the die aligns that
+    face's normal to the viewer (plus a random readable twist), and antipodal faces are numbered to
+    sum to 21, like a real d20. Faces are relit every frame with a fixed light direction — <code class="svelte-36n0qb">brightness = max(0, n&middot;L)</code> — so the facets shade correctly as it tumbles.</p> <h2 class="svelte-36n0qb">Details that matter</h2> <ul class="svelte-36n0qb"><li class="svelte-36n0qb"><strong>The idle wobble is cheap.</strong> ~30fps, two small sine oscillations, and an <code class="svelte-36n0qb">IntersectionObserver</code> stops it entirely the moment the die scrolls off-screen.</li> <li class="svelte-36n0qb"><strong>Reduced motion keeps the feature.</strong> Under <code class="svelte-36n0qb">prefers-reduced-motion</code> there is no tumble and no wobble — one static frame — but clicking still snaps to a face and
+      still answers "what do we play?". The page-flip becomes an instant page-swap the same way.</li> <li class="svelte-36n0qb"><strong>Nothing hides without JavaScript.</strong> The face matrices are computed at component
+      init, so the prerendered HTML ships a fully-formed 3D die. Reveals and the hero's clipped lines
+      are gated behind a <code class="svelte-36n0qb">.js</code> class set synchronously in <code class="svelte-36n0qb">&lt;head&gt;</code>.</li> <li class="svelte-36n0qb"><strong>The book cheats with z-index, honestly.</strong> Three sheets over two base pages make
+      four spreads; whichever sheet is mid-flip borrows <code class="svelte-36n0qb">z-index: 40</code> for 900ms so it never
+      clips through its neighbours.</li> <li class="svelte-36n0qb"><strong>One ease to rule them.</strong> The house curve <code class="svelte-36n0qb">cubic-bezier(.26, 1.5, .38, .96)</code> — "settle" — overshoots and rests, like a die's last wobble. Buttons, reveals and the roll's
+      final slerp all share it.</li> <li class="svelte-36n0qb"><strong>Theme is one attribute.</strong> Light linen / dark board-night flip on <code class="svelte-36n0qb">:root[data-theme]</code>, persisted to <code class="svelte-36n0qb">localStorage</code>, bootstrapped inline in <code class="svelte-36n0qb">&lt;head&gt;</code> before first paint. The box art keeps fixed print colours so the
+      "shelf" looks like ink, not UI.</li></ul> <div class="callout svelte-36n0qb"><p class="svelte-36n0qb">The RSVP form is a demo — it validates and confirms in place but sends
+    nothing. Wire it to a real endpoint (Formspree, a serverless function, your shop's mailer) before
+    promising anyone a chair.</p></div> <h2 class="svelte-36n0qb">Ship it on GitHub Pages</h2> <p class="svelte-36n0qb">The adapter writes the whole prerendered site into <code class="svelte-36n0qb">docs/</code>, and the base path flips to
+    the repo name for production builds:</p> <pre class="svelte-36n0qb"><code class="svelte-36n0qb"></code></pre> <pre class="svelte-36n0qb"><code class="svelte-36n0qb"></code></pre> <p class="svelte-36n0qb">A <code class="svelte-36n0qb">.nojekyll</code> file rides along in <code class="svelte-36n0qb">static/</code> so Pages serves the <code class="svelte-36n0qb">_app</code> directory untouched. Internal links go through SvelteKit's <code class="svelte-36n0qb">base</code> helper, so the same build works at the domain root or a project subpath.</p> <a class="doc-back svelte-36n0qb" style="margin-top:2.6rem">&larr; Back to Meeplewood</a></main>`,1);function z(u){var i=P();A("36n0qb",k=>{var x=G();$(()=>{M.title="How Meeplewood was built — Parable build guide"}),h(k,x)});var c=e(T(i),2),a=s(c),d=s(a),m=e(d,2);C(m,{}),t(a);var o=e(a,22),g=s(o);g.textContent="// each face of the d20 is one <div>, laid onto the solid by hand.\n// icosahedron vertices come from three golden rectangles; faces are\n// every triple of vertices exactly one edge apart. Then, per face:\nconst G = centroid(A, B, C);\nlet n = norm(cross(sub(B, A), sub(C, A)));   // outward normal -> CSS z\nif (dot(n, G) < 0) n = neg(n);\nlet u = norm(sub(B, C));                     // local x — along the base\nconst v = norm(sub(G, A));                   // local y — apex to centroid\nif (dot(cross(u, v), n) < 0) u = neg(u);     // keep the number unmirrored\n\nface.transform = `matrix3d(\n  ${u[0]}, ${u[1]}, ${u[2]}, 0,\n  ${v[0]}, ${v[1]}, ${v[2]}, 0,\n  ${n[0]}, ${n[1]}, ${n[2]}, 0,\n  ${G[0]}, ${G[1]}, ${G[2]}, 1)`;",t(o);var n=e(o,4),f=s(n);f.textContent=`// rolling = two phases on one quaternion.
+// A: a free tumble around a random axis, decelerating…
+qMid = qMul(qAxis(axisA, spin * (1 - Math.pow(1 - p, 2.2))), q0);
+// B: …then slerp into the face the roll picked, with the house
+// "settle" ease — it overshoots slightly, like a real die's last wobble.
+orient = qSlerp(qMid, target, easeSettle(p));`,t(n);var l=e(n,14),q=s(l);q.textContent=`// svelte.config.js
+import adapter from '@sveltejs/adapter-static';
+
+export default {
+  kit: {
+    adapter: adapter({ pages: 'docs', assets: 'docs', fallback: null }),
+    paths: {
+      base: process.env.NODE_ENV === 'production' ? '/meeplewood' : ''
+    }
+  }
+};`,t(l);var r=e(l,2),w=s(r);w.textContent=`npm run build          # prerenders every route into docs/
+git add docs && git commit -m "build"
+git push               # then: Settings -> Pages -> main /docs`,t(r);var y=e(r,4);t(c),_(()=>{p(d,"href",`${b??""}/`),p(y,"href",`${b??""}/`)}),h(u,i)}export{z as component};
