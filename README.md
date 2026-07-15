@@ -1,4 +1,37 @@
-# Meeplewood
+<!-- parable:beautified -->
+<div align="center">
+
+<h1>Meeplewood</h1>
+
+<p><strong>Tabletop publisher — click a tumbling 3D-CSS d20 to pick game night, then learn the rules in a page-flip book.</strong></p>
+
+<p>
+  <a href="https://bswxyz.github.io/meeplewood/"><img alt="Live demo" src="https://img.shields.io/badge/demo-live-8b5cf6?style=flat-square&labelColor=1a1a1a"></a>
+  <img alt="Family" src="https://img.shields.io/badge/family-Parable-ec4899?style=flat-square&labelColor=1a1a1a">
+  <img alt="Stack" src="https://img.shields.io/badge/stack-SvelteKit-f5a623?style=flat-square&labelColor=1a1a1a">
+  <a href="LICENSE"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-22c55e?style=flat-square&labelColor=1a1a1a"></a>
+</p>
+
+<p>
+  <a href="https://bswxyz.github.io/meeplewood/"><b>Live demo</b></a>
+  &nbsp;·&nbsp;
+  <a href="https://bswxyz.github.io/meeplewood/guide/">Build notes</a>
+  &nbsp;·&nbsp;
+  <a href="https://parable-three.vercel.app/templates">More templates</a>
+</p>
+
+<a href="https://bswxyz.github.io/meeplewood/">
+  <img src=".github/preview.jpg" alt="Meeplewood — live preview" width="100%">
+</a>
+
+</div>
+
+**Use this template** — copy the source into a new project:
+
+```bash
+npx degit bswxyz/meeplewood my-app
+```
+
 
 Board games for the good kind of noise. A design-showcase website template for a fictional
 tabletop publisher — kind rulebooks, loud endings, and a d20 that decides what you play tonight.
